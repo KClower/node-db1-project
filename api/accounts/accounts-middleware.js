@@ -1,7 +1,19 @@
+const accountsModel = require('./accounts-model.js');
+
 exports.checkAccountPayload = (req, res, next) => {
   // DO YOUR MAGIC
   // Note: you can either write "manual" validation logic
   // or use the Yup library (not currently installed)
+
+  // if (!req.body.name || !req.body.buget)
+  //   return res.status(400).json({ Message: 'Name and Budget are required.' });
+  // if (req.body.name < 3 || req.body.name > 100)
+  //   return res.status(400).json({ Message: "Name of Account must be between 3 and 100." });
+  // if (req.body.budget === "")
+  //   return res.status(400).json({ Message: "Budget of account must be a number." });
+  // if (req.body.budget < 0 || req.body.budget > 1000000)
+  //   return res.status(400).json({ Message: "Budget6 of account is too large or too small." });
+  // next()
 }
 
 exports.checkAccountNameUnique = (req, res, next) => {
@@ -10,4 +22,7 @@ exports.checkAccountNameUnique = (req, res, next) => {
 
 exports.checkAccountId = (req, res, next) => {
   // DO YOUR MAGIC
+  // if (!req.params.id)
+  //   return res.status(404).json({ Message: "Account not found." })
+  // next()
 }
