@@ -2,6 +2,9 @@ const router = require('express').Router()
 
 const Accounts = require('./accounts-model.js');
 const { checkAccountPayload, checkAccountNameUnique, checkAccountId } = require('./accounts-middleware.js');
+
+
+
 router.get('/', (req, res, next) => {
   // DO YOUR MAGIC
   Accounts.getAll(req.query)
@@ -26,7 +29,7 @@ router.get('/:id', checkAccountId, (req, res, next) => {
     });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAccountPayload, (req, res, next) => {
   // DO YOUR MAGIC
   Accounts.create(req.body)
     .then(account => {
@@ -38,7 +41,7 @@ router.post('/', (req, res, next) => {
     });
 });
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', checkAccountId, checkAccountPayload, (req, res, next) => {
   // DO YOUR MAGIC
   const account = req.body;
   Accounts.updateById(req.params.id, account)
@@ -55,7 +58,7 @@ router.put('/:id', (req, res, next) => {
     });
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', checkAccountId, (req, res, next) => {
   // DO YOUR MAGIC
   Accounts.deleteById(req.params.id)
     .then(count => {
@@ -73,6 +76,10 @@ router.delete('/:id', (req, res, next) => {
 
 router.use((err, req, res, next) => { // eslint-disable-line
   // DO YOUR MAGIC
+  res.status(err.status || 500).json({
+    message: err.message,
+    stack: err.stack,
+  })
 })
 
 module.exports = router;
