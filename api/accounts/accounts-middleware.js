@@ -1,4 +1,4 @@
-const accountsModel = require('./accounts-model.js');
+const db = require('../../data/db-config');
 
 exports.checkAccountPayload = (req, res, next) => {
   // DO YOUR MAGIC
@@ -40,14 +40,26 @@ exports.checkAccountPayload = (req, res, next) => {
 }
 
 
-exports.checkAccountId = async (req, res, next) => {
+exports.checkAccountId = (req, res, next) => {
   // DO YOUR MAGIC
-  if (!req.params.id)
-    return res.status(404).json({ Message: "Account not found." })
-  next()
+  db('accounts')
+    .where({ id: req.params.id })
+    .then(result => {
+      const [account] = result
+      if (account === undefined)
+        return res.status(404).json({ Message: "Account not found." })
+      next()
+    })
 }
 
-exports.checkAccountNameUnique = async (req, res, next) => {
+exports.checkAccountNameUnique = (req, res, next) => {
   // DO YOUR MAGIC
+  db('accounts')
+    .where({ name: req.body.name })
+    .then(result => {
+      const [account] = result
+      if (account === undefined)
+        return res.status(400).json({ message: "that name is taken" })
+    })
 
 }
